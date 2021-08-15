@@ -23,7 +23,7 @@
 
 ### 直接运行
 
-从release中下载可执行文件`KnightReport.exe`，双击运行
+从Releases中下载可执行文件`KnightReport.exe`，双击运行
 
 ### 从源码运行
 
