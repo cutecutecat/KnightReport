@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO,
 fperr = open("KnightReport.err", "w")
 sys.stderr = fperr
 
-version = "0.1.0"
+version = "0.1.1"
 website = "https://github.com/cutecutecat/KnightReport"
 
 if __name__ == "__main__":
