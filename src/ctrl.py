@@ -24,6 +24,8 @@ def user_login():
 
 class Ctrl:
     def __init__(self):
+        self.max_retry = 20
+
         self.cookiesJar: Union[CookieJar, None] = None
 
         self.dates: Sequence[str] = list()
@@ -31,6 +33,8 @@ class Ctrl:
         self.person_info: Dict[int, Info] = dict()
         self.combat: Union[Combat, None] = None
         self.all_uid: Set = set()
+
+
 
     def exec(self):
         r"""
@@ -56,10 +60,13 @@ class Ctrl:
         r"""
         send network requests and get guild status
         """
+        tried = 0
         while True:
             cj = browser_cookie3.edge(domain_name=".bigfun.cn")
             r = requests.get(constants.GuildStatusURL, cookies=cj, headers=constants.Headers)
             guild_status = json.loads(r.text)
+            if tried > self.max_retry:
+                raise TimeoutError("超时{:d}s，未获得有效cookies".format(self.max_retry * 15))
             if guild_status['code'] == 0:
                 logging.info("成功读取公会数据")
                 self.cookiesJar = cj
@@ -67,6 +74,7 @@ class Ctrl:
             elif guild_status['code'] == 401:
                 logging.warning("cookies 未正确获取, 请完成登录，等待15秒重试...")
                 sleep(15)
+                tried += 1
                 continue
             else:
                 raise RuntimeError("未知的错误码 {:d}".format(guild_status['code']))
@@ -106,10 +114,17 @@ class Ctrl:
             if uid not in uid_today:
                 uid_today.add(uid)
             else:
-                logging.warning("重复玩家uid {:d}, 已去除".format(uid))
+                logging.warning(f"重复玩家uid {uid}, 已去除")
                 continue
 
             hits = person_attack['damage_num']
+            # check abnormal hits today
+            if hits > 3:
+                logging.warning("玩家uid{:d}于日期{:s}对boss{:s}异常出刀数{:d}"
+                                .format(uid, self.dates[index], boss_name,
+                                        self.person_info[uid].boss_hits[boss_name]))
+                logging.warning("记录当日战斗日志")
+                logging.warning(f"{json.dumps(attack_status)}")
             damage = person_attack['damage_total']
             self.person_info[uid].hits += hits
             self.person_info[uid].damage += damage

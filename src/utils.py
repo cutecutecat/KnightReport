@@ -1,10 +1,9 @@
 import csv
+import logging
 from typing import Sequence, Dict, List
 
 
 class Info:
-    omit_mapping = {0: "", -1: "-1", -2: "-2", -3: "-3"}
-
     def __init__(self, uid: int, name: str, days: int):
         self.uid: int = uid
         self.name: str = name
@@ -14,6 +13,13 @@ class Info:
         self.boss_damage: Dict[str, int] = {}
         # omit can be [-3, 0], -x equals omit x hit one day
         self.omission: List[int] = [0] * days
+
+    @staticmethod
+    def omit_mapping(x: int):
+        if x == 0:
+            return ""
+        else:
+            return str(x)
 
     def add_hit(self, boss_target: str, damage: int):
         if not self.boss_hits.__contains__(boss_target):
@@ -31,7 +37,7 @@ class Info:
             else:
                 boss_status.extend([0, 0])
 
-        date_status = [self.omit_mapping[omit] for omit in self.omission]
+        date_status = [self.omit_mapping(omit) for omit in self.omission]
 
         status = [self.uid, self.name, self.hits, self.damage]
         status.extend(boss_status)
