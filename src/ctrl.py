@@ -120,7 +120,7 @@ class Ctrl:
             hits = person_attack['damage_num']
             # check abnormal hits today
             if hits > 3:
-                logging.warning("玩家uid{:d}于日期{:s}对boss{:s}异常出刀数{:d}"
+                logging.warning("玩家uid {:d}于日期{:s} 对boss{:s} 异常出刀数{:d}"
                                 .format(uid, self.dates[index], boss_name,
                                         self.person_info[uid].boss_hits[boss_name]))
                 logging.warning("记录当日战斗日志")
