@@ -12,9 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Set env
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/v*/}" >> $GITHUB_ENV
-    
     - name: Build exec file
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
