@@ -15,15 +15,10 @@ jobs:
     - uses: actions/checkout@v2
     
     # if not exist build, failed
-    - name: Whether to build
-      uses: lots0logs/gh-action-conditional-failure@1.0.0
-      with:
-        args: --not --file-exists -- release.env
-    
-    - name: Setup environment of version
-      uses: thgbrb/setup-environment@v1
-      with:
-        environment-config-file: release.env
+#     - name: Whether to build
+#       uses: lots0logs/gh-action-conditional-failure@1.0.0
+#       with:
+#         args: --not --file-exists -- release
     
     - name: Build exec file
       uses: JackMcKew/pyinstaller-action-windows@main
@@ -31,14 +26,15 @@ jobs:
         path: src
         spec: KnightReport.spec
     
-    - name: Upload to artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: name-of-artifact
-        path: src/dist/windows
+#     - name: Upload to artifact
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: name-of-artifact
+#         path: src/dist/windows
         
-    - name: Release file
-      uses: Roang-zero1/github-upload-release-artifacts-action@v2.1.0
+    - name: Upload asset to release
+      uses: gacts/upload-to-release@v1.0.1
       with:
-        # Allows to pass an already created tag, forces update_existing to true.
-        created_tag: # optional, default is 
+        file: src/dist/windows/KnightReport.exe
+        type: application/octet-stream
+        dry: false
