@@ -34,6 +34,8 @@ jobs:
         
     - name: Upload asset to release
       uses: gacts/upload-to-release@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         file: src/dist/windows/KnightReport.exe
         type: application/octet-stream
