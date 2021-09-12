@@ -12,11 +12,11 @@ jobs:
     steps:
 #     - uses: actions/checkout@v2
         
-    - name: Analysing the code with pylint
-      uses: konstruktoid/action-pylint@master
+#     - name: Analysing the code with pylint
+#       uses: konstruktoid/action-pylint@master
     
     - name: Unit Testing With Python
-      run: python -m unittest main_test.TestCtrl
+      run: python -m unittest testcase.main_test.TestCtrl
     
 #     - name: Build exec file
 #       uses: JackMcKew/pyinstaller-action-windows@main
