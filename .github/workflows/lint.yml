@@ -10,6 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Analysing the code with pylint
-        uses: konstruktoid/action-pylint@master
- 
+      - name: pylinter
+        uses: alexanderdamiani/pylinter@v1.3.0
+        with:
+          # directory to run linting on
+          python-root: src
+          # flake8 flags
+          flake8-flags: .
+          # mypy flags
+          mypy-flags: .
+          # optional exit on isort errors
+          fail-on-isort: true
+          # skip flake8 checks
+          skip-flake8: false
+          # skip mypy checks
+          skip-mypy: false
+          # skip isort checks
+          skip-isort: false
+
