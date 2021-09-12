@@ -12,6 +12,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Install dependencies for pylint
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+        
+    - name: Analysing the code with pylint
+      run: |
+        pylint `ls -R|grep .py$|xargs`
+    
+    - name: Unit Testing With Python
+      uses: PrajjawalBanati/Python-actions@0.0.1
+      with:
+        src: testcase
+    
     - name: Build exec file
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
