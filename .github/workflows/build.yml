@@ -1,0 +1,21 @@
+name: Package Application with Pyinstaller
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build exec file
+      uses: JackMcKew/pyinstaller-action-windows@main
+      with:
+        path: .
+        spec: KnightReport.spec
+        
+    - name: Upload asset to release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: src/dist/windows/KnightReport.exe
+        tag_name: automatic
