@@ -1,4 +1,4 @@
-name: Package Application with Pyinstaller
+name: Run static check
 
 on:
   push:
