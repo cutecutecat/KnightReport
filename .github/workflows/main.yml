@@ -22,9 +22,7 @@ jobs:
         pylint `ls -R|grep .py$|xargs`
     
     - name: Unit Testing With Python
-      uses: PrajjawalBanati/Python-actions@0.0.1
-      with:
-        src: testcase
+      run: python -m unittest main_test.TestCtrl
     
     - name: Build exec file
       uses: JackMcKew/pyinstaller-action-windows@main
