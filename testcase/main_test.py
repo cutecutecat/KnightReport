@@ -4,7 +4,6 @@ from os.path import dirname, join
 
 sys.path.append(dirname(__file__))
 sys.path.append(join(dirname(dirname(__file__)), 'src'))
-print(sys.path)
 
 from src.ctrl import Ctrl
 from testcase.data import TestData
