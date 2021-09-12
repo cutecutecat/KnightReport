@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+#     - uses: actions/checkout@v2
     
     - name: Install dependencies for pylint
       run: |
@@ -19,19 +19,19 @@ jobs:
         
     - name: Analysing the code with pylint
       run: |
-        pylint `ls -R|grep .py$|xargs`
+        pylint src
     
     - name: Unit Testing With Python
       run: python -m unittest main_test.TestCtrl
     
-    - name: Build exec file
-      uses: JackMcKew/pyinstaller-action-windows@main
-      with:
-        path: .
-        spec: KnightReport.spec
+#     - name: Build exec file
+#       uses: JackMcKew/pyinstaller-action-windows@main
+#       with:
+#         path: .
+#         spec: KnightReport.spec
         
-    - name: Upload asset to release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: src/dist/windows/KnightReport.exe
-        tag_name: automatic
+#     - name: Upload asset to release
+#       uses: softprops/action-gh-release@v1
+#       with:
+#         files: src/dist/windows/KnightReport.exe
+#         tag_name: automatic
