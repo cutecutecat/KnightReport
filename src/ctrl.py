@@ -34,8 +34,6 @@ class Ctrl:
         self.combat: Union[Combat, None] = None
         self.all_uid: Set = set()
 
-
-
     def exec(self):
         r"""
         execute the whole generating stream
@@ -120,11 +118,10 @@ class Ctrl:
             hits = person_attack['damage_num']
             # check abnormal hits today
             if hits > 3:
-                logging.warning("玩家uid {:d}于日期{:s} 对boss{:s} 异常出刀数{:d}"
-                                .format(uid, self.dates[index], boss_name,
-                                        self.person_info[uid].boss_hits[boss_name]))
+                logging.warning("玩家uid {:d}于日期{:s} 异常出刀数{:d}"
+                                .format(uid, self.dates[index], hits))
                 logging.warning("记录当日战斗日志")
-                logging.warning(f"{json.dumps(attack_status)}")
+                logging.warning(attack_status)
             damage = person_attack['damage_total']
             self.person_info[uid].hits += hits
             self.person_info[uid].damage += damage
@@ -135,7 +132,13 @@ class Ctrl:
                 boss_name = damage_once['boss_name']
                 self.combat.add_boss(boss_name)
                 damage = damage_once['damage']
-                self.person_info[uid].add_hit(boss_name, damage)
+                killed = damage_once['is_kill']
+                if killed != 0 and killed != 1:
+                    logging.error("玩家uid {:d}于日期{:s} 异常尾刀数{:d}"
+                                  .format(uid, self.dates[index], killed))
+                    logging.error("记录当日战斗日志")
+                    logging.error(attack_status)
+                self.person_info[uid].add_hit(boss_name, damage, killed)
         # People don't join combat today
         for uid in self.all_uid.difference(uid_today):
             self.person_info[uid].omission[index] = -3

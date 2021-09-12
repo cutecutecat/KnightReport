@@ -1,5 +1,4 @@
 import csv
-import logging
 from typing import Sequence, Dict, List
 
 
@@ -8,7 +7,9 @@ class Info:
         self.uid: int = uid
         self.name: str = name
         self.hits: int = 0
+        self.kill: int = 0
         self.damage: int = 0
+        self.not_killed_damage: int = 0
         self.boss_hits: Dict[str, int] = {}
         self.boss_damage: Dict[str, int] = {}
         # omit can be [-3, 0], -x equals omit x hit one day
@@ -21,7 +22,13 @@ class Info:
         else:
             return str(x)
 
-    def add_hit(self, boss_target: str, damage: int):
+    def add_hit(self, boss_target: str, damage: int, killed: int):
+        if killed == 0:
+            self.not_killed_damage += damage
+        elif killed == 1:
+            self.kill += 1
+        else:
+            raise ValueError
         if not self.boss_hits.__contains__(boss_target):
             self.boss_hits[boss_target] = 1
             self.boss_damage[boss_target] = damage
@@ -39,7 +46,9 @@ class Info:
 
         date_status = [self.omit_mapping(omit) for omit in self.omission]
 
-        status = [self.uid, self.name, self.hits, self.damage]
+        avg_damage = '{:d}'.format(
+            self.not_killed_damage // (self.hits - self.kill)) if self.hits - self.kill > 0 else '-'
+        status = [self.uid, self.name, self.hits, self.damage, self.kill, avg_damage]
         status.extend(boss_status)
         status.extend(date_status)
         return status
@@ -70,7 +79,7 @@ class Combat:
             self._boss_set.add(name)
 
     def marshal(self, person_list: Sequence[Info], filename: str):
-        headers = ["uid", "玩家", "出刀", "伤害"]
+        headers = ["uid", "玩家", "出刀", "伤害", "尾刀", "均伤(除尾刀)"]
 
         for boss in self.boss_name:
             headers.extend(["{:s}出刀".format(boss), "{:s}伤害".format(boss)])
