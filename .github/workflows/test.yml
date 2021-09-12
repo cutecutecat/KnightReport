@@ -10,22 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-#     - uses: actions/checkout@v2
-        
-#     - name: Analysing the code with pylint
-#       uses: konstruktoid/action-pylint@master
-    
-    - name: Unit Testing With Python
-      run: python -m unittest
-    
-#     - name: Build exec file
-#       uses: JackMcKew/pyinstaller-action-windows@main
-#       with:
-#         path: .
-#         spec: KnightReport.spec
-        
-#     - name: Upload asset to release
-#       uses: softprops/action-gh-release@v1
-#       with:
-#         files: src/dist/windows/KnightReport.exe
-#         tag_name: automatic
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          
+      - uses: BSFishy/pip-action@v1
+        with:
+          requirements: requirements.txt
+          
+      - name: List python packages
+        run: |
+          python -m pip list
+          
+      - name: Python unit tests
+        run: |
+          python -m unittest
