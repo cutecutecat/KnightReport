@@ -11,5 +11,5 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Analysing the code with pylint
-      uses: konstruktoid/action-pylint@master
+        uses: konstruktoid/action-pylint@master
  
