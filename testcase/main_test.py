@@ -2,6 +2,7 @@ import os
 import sys
 import unittest
 
+sys.path.append(os.path.join(__file__, '..'))
 sys.path.append(os.path.join(__file__, '../../src'))
 
 from src.ctrl import Ctrl
