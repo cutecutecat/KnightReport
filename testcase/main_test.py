@@ -4,6 +4,7 @@ import unittest
 
 sys.path.append(os.path.join(__file__, '..'))
 sys.path.append(os.path.join(__file__, '../../src'))
+print(sys.path)
 
 from src.ctrl import Ctrl
 from testcase.data import TestData
