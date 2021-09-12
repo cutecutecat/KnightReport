@@ -11,15 +11,9 @@ jobs:
 
     steps:
 #     - uses: actions/checkout@v2
-    
-    - name: Install dependencies for pylint
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint
         
     - name: Analysing the code with pylint
-      run: |
-        pylint src
+      uses: konstruktoid/action-pylint@master
     
     - name: Unit Testing With Python
       run: python -m unittest main_test.TestCtrl
