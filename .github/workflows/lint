@@ -1,0 +1,15 @@
+name: Package Application with Pyinstaller
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Analysing the code with pylint
+      uses: konstruktoid/action-pylint@master
+ 
