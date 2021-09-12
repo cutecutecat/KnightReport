@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+  
     - name: Build exec file
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
