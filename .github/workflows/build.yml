@@ -20,5 +20,5 @@ jobs:
     - name: Upload asset to release
       uses: softprops/action-gh-release@v1
       with:
-        files: src/dist/windows/KnightReport.exe
+        files: dist/windows/KnightReport.exe
         tag_name: automatic
