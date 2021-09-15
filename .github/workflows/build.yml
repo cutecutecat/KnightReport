@@ -27,14 +27,26 @@ jobs:
       env:
           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
       run: |
-        echo $TOKEN | sed 's/./& /g'
+        curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
     
     - name: For test 2
       env:
           TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
-        echo $TOKE | sed 's/./& /g'
+        curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
     
+    - name: For test 3
+      env:
+          TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      run: |
+        curl --header "PRIVATE-TOKEN: ${{ secrets.ACCESS_TOKEN }}" "https://gitlab.com/api/v4/projects/29590976"
+    
+    - name: For test 4
+      env:
+          TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      run: |
+        curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}" "https://gitlab.com/api/v4/projects/29590976"
+        
 #     - name: Auth to gitlab
 #       env:
 #           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
