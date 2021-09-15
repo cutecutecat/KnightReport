@@ -23,6 +23,12 @@ jobs:
         files: dist/windows/KnightReport.exe
         tag_name: automatic
     
+    - name: Auth to gitlab
+      env:
+          TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
+      run: |
+        curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects"
+    
     - name: Upload asset to gitlab
       env:
           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
