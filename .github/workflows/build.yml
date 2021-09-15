@@ -27,7 +27,7 @@ jobs:
       env:
           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
       run: |
-        echo $TOKEN
+        echo "$TOKEN"
     
     - name: Auth to gitlab
       env:
