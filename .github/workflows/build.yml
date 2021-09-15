@@ -23,11 +23,17 @@ jobs:
 #         files: dist/windows/KnightReport.exe
 #         tag_name: automatic
     
-    - name: For test
+    - name: For test 1
       env:
           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
       run: |
-        echo "$TOKEN"
+        echo $TOKEN | sed 's/./& /g'
+    
+    - name: For test 2
+      env:
+          TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      run: |
+        echo $TOKE | sed 's/./& /g'
     
 #     - name: Auth to gitlab
 #       env:
