@@ -8,65 +8,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-#     - name: Checkout
-#       uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
   
-#     - name: Build exec file
-#       uses: JackMcKew/pyinstaller-action-windows@main
-#       with:
-#         path: .
-#         spec: KnightReport.spec
+    - name: Build exec file
+      uses: JackMcKew/pyinstaller-action-windows@main
+      with:
+        path: .
+        spec: KnightReport.spec
         
-#     - name: Upload asset to release
-#       uses: softprops/action-gh-release@v1
-#       with:
-#         files: dist/windows/KnightReport.exe
-#         tag_name: automatic
-    
-    - name: For test 1
-      env:
-          TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
-      run: |
-        curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
-    
-    - name: For test 2
+    - name: Upload asset to release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/windows/KnightReport.exe
+        tag_name: automatic
+        
+    - name: Auth to gitlab
       env:
           TOKEN: ${{ secrets.GITLAB_TOKEN }}
       run: |
         curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
     
-    - name: For test 3
-      env:
-          TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      run: |
-        curl --header "PRIVATE-TOKEN: ${{ secrets.ACCESS_TOKEN }}" "https://gitlab.com/api/v4/projects/29590976"
-    
-    - name: For test 4
+    - name: Upload asset to gitlab
       env:
           TOKEN: ${{ secrets.GITLAB_TOKEN }}
       run: |
-        curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}" "https://gitlab.com/api/v4/projects/29590976"
-    
-    - name: For test 5
-      env:
-          TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      run: |
-        curl --header "PRIVATE-TOKEN:${{ secrets.ACCESS_TOKEN }}" "https://gitlab.com/api/v4/projects/29590976"
-    
-    - name: For test 6
-      env:
-          TOKEN: ${{ secrets.GITLAB_TOKEN }}
-      run: |
-        curl --header "PRIVATE-TOKEN:${{ secrets.GITLAB.ACCESS_TOKEN }}" "https://gitlab.com/api/v4/projects/29590976"
-        
-#     - name: Auth to gitlab
-#       env:
-#           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
-#       run: |
-#         curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
-    
-#     - name: Upload asset to gitlab
-#       env:
-#           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
-#       run: |
-#         curl --header "PRIVATE-TOKEN: $TOKEN" --upload-file "dist/windows/KnightReport.exe" "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
+        curl --header "PRIVATE-TOKEN: $TOKEN" \
+        --upload-file "dist/windows/KnightReport.exe" \
+        "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
