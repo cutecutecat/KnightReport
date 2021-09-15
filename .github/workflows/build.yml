@@ -31,7 +31,7 @@ jobs:
     
     - name: For test 2
       env:
-          TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TOKEN: ${{ secrets.GITLAB_TOKEN }}
       run: |
         curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
     
@@ -43,7 +43,7 @@ jobs:
     
     - name: For test 4
       env:
-          TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TOKEN: ${{ secrets.GITLAB_TOKEN }}
       run: |
         curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}" "https://gitlab.com/api/v4/projects/29590976"
     
@@ -55,7 +55,7 @@ jobs:
     
     - name: For test 6
       env:
-          TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TOKEN: ${{ secrets.GITLAB_TOKEN }}
       run: |
         curl --header "PRIVATE-TOKEN:${{ secrets.GITLAB.ACCESS_TOKEN }}" "https://gitlab.com/api/v4/projects/29590976"
         
