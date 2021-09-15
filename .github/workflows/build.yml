@@ -25,7 +25,7 @@ jobs:
     
     - name: Upload asset to gitlab
       env:
-          TOKEN: ${{ GITLAB.ACCESS_TOKEN }}
+          TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
       run: |
         curl --header "PRIVATE-TOKEN: $TOKEN" \
              --upload-file dist/windows/KnightReport.exe \
