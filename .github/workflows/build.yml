@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -25,12 +25,12 @@ jobs:
     
     - name: Auth to gitlab
       env:
-          TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
+          TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
     
     - name: Upload asset to gitlab
       env:
-          TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
+          TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         curl --header "PRIVATE-TOKEN: $TOKEN" --upload-file "dist/windows/KnightReport.exe" "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
