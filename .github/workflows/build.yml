@@ -27,7 +27,7 @@ jobs:
       env:
           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
       run: |
-        curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects"
+        curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
     
     - name: Upload asset to gitlab
       env:
