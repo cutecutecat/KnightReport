@@ -35,4 +35,4 @@ jobs:
       run: |
         curl --header "PRIVATE-TOKEN: $TOKEN" \
              --upload-file dist/windows/KnightReport.exe \
-             "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/file.txt?status=default"
+             "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
