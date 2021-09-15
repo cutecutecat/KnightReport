@@ -33,6 +33,4 @@ jobs:
       env:
           TOKEN: ${{ secrets.GITLAB.ACCESS_TOKEN }}
       run: |
-        curl -v --header "PRIVATE-TOKEN: $TOKEN" \
-             --upload-file "dist/windows/KnightReport.exe" \
-             "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
+        curl --header "PRIVATE-TOKEN: $TOKEN" --upload-file "dist/windows/KnightReport.exe" "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
