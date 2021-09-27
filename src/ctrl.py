@@ -1,25 +1,18 @@
 import json
 import logging
-import webbrowser
+import sys
 from os import path
 from http.cookiejar import CookieJar
+from threading import Thread
 from time import sleep
 from typing import Dict, Sequence, Set, Union
 
-import browser_cookie3
 import requests
+from PyQt5.QtWidgets import QApplication
 
 import constants
+from browser import MainWindow
 from utils import Info, Combat
-
-
-def user_login():
-    """
-    ask user to login for fetch cookies(strictly use Windows Edge)
-    :return:
-    """
-    ctrl = webbrowser.get(using='edge')
-    ctrl.open(constants.LoginURL)
 
 
 class Ctrl:
@@ -27,6 +20,11 @@ class Ctrl:
         self.max_retry = 20
 
         self.cookiesJar: Union[CookieJar, None] = None
+        # ui
+        self.window: Union[MainWindow, None] = None
+        self.app: Union[QApplication, None] = None
+        self.browser = Thread(target=self.user_login)
+        self.browser.start()
 
         self.dates: Sequence[str] = list()
         self.uid_name: Dict[int, str] = dict()
@@ -34,11 +32,16 @@ class Ctrl:
         self.combat: Union[Combat, None] = None
         self.all_uid: Set = set()
 
+    def user_login(self):
+        self.app = QApplication(sys.argv)
+        self.window = MainWindow()
+        self.window.show()
+        self.app.exec()
+
     def exec(self):
         r"""
         execute the whole generating stream
         """
-        user_login()
         try:
             guild_status = self.get_guild()
             self.extract_guild_info(guild_status)
@@ -60,7 +63,10 @@ class Ctrl:
         """
         tried = 0
         while True:
-            cj = browser_cookie3.edge(domain_name=".bigfun.cn")
+            # cj = browser_cookie3.edge(domain_name=".bigfun.cn")
+            while self.window is None or self.window.cj is None:
+                sleep(1)
+            cj = self.window.cj
             r = requests.get(constants.GuildStatusURL, cookies=cj, headers=constants.Headers)
             guild_status = json.loads(r.text)
             if tried > self.max_retry:
@@ -68,9 +74,11 @@ class Ctrl:
             if guild_status['code'] == 0:
                 logging.info("成功读取公会数据")
                 self.cookiesJar = cj
+                self.window.valid = True
+                self.app.quit()
                 return guild_status
             elif guild_status['code'] == 401:
-                logging.warning("cookies 未正确获取, 请完成登录，等待15秒重试...")
+                logging.warning("cookies 无效, 请完成登录，等待15秒重试...")
                 sleep(15)
                 tried += 1
                 continue

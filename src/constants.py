@@ -1,9 +1,3 @@
-import webbrowser
-
-# initial edge hook for webbrowser
-edge_path = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-webbrowser.register('edge', None, webbrowser.BackgroundBrowser(edge_path))
-
 Headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                   'AppleWebKit/537.36 (KHTML, like Gecko) '
