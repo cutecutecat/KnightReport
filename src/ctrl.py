@@ -24,7 +24,6 @@ class Ctrl:
         self.window: Union[MainWindow, None] = None
         self.app: Union[QApplication, None] = None
         self.browser = Thread(target=self.user_login)
-        self.browser.start()
 
         self.dates: Sequence[str] = list()
         self.uid_name: Dict[int, str] = dict()
@@ -43,6 +42,7 @@ class Ctrl:
         execute the whole generating stream
         """
         try:
+            self.browser.start()
             guild_status = self.get_guild()
             self.extract_guild_info(guild_status)
 
