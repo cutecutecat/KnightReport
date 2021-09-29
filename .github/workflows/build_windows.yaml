@@ -1,0 +1,53 @@
+name: Build with Pyinstaller
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+  
+    - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          
+    - uses: BSFishy/pip-action@v1
+      with:
+        requirements: requirements.txt
+
+    - name: List python packages
+      run: |
+        python -m pip list
+    
+    - name: List python packages
+      run: |
+        python -m pip list
+    
+    - name: Build execuate
+      run: |
+        .\build.ps1
+        
+    - name: Upload asset to release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/windows/KnightReport.exe
+        tag_name: automatic
+        
+#     - name: Auth to gitlab
+#       env:
+#           TOKEN: ${{ secrets.GITLAB_TOKEN }}
+#       run: |
+#         curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
+    
+#     - name: Upload asset to gitlab
+#       env:
+#           TOKEN: ${{ secrets.GITLAB_TOKEN }}
+#       run: |
+#         curl --header "PRIVATE-TOKEN: $TOKEN" \
+#         --upload-file "dist/windows/KnightReport.exe" \
+#         "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
