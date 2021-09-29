@@ -11,17 +11,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
   
-    - name: Build exec file
-      uses: JackMcKew/pyinstaller-action-windows@main
-      with:
-        path: .
-        spec: KnightReport.spec
+#     - name: Build exec file
+#       uses: JackMcKew/pyinstaller-action-windows@main
+#       with:
+#         path: .
+#         spec: KnightReport.spec
         
-    - name: Upload asset to release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: dist/windows/KnightReport.exe
-        tag_name: automatic
+#     - name: Upload asset to release
+#       uses: softprops/action-gh-release@v1
+#       with:
+#         files: dist/windows/KnightReport.exe
+#         tag_name: automatic
         
 #     - name: Auth to gitlab
 #       env:
