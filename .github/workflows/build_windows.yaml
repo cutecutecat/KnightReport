@@ -31,7 +31,7 @@ jobs:
     - name: Upload asset to release
       uses: softprops/action-gh-release@v1
       with:
-        files: tmp/dist/KnightReport.exe
+        files: ${{ GITHUB_WORKSPACE }}/tmp/dist/KnightReport.exe
         tag_name: automatic
         
 #     - name: Auth to gitlab
