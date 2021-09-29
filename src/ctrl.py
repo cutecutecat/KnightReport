@@ -50,7 +50,7 @@ class Ctrl:
                 attack_status = self.get_date(date)
                 self.extract_date_info(i, attack_status)
             self.combat.marshal(self.person_info.values(), "./report.csv")
-            logging.info("会战数据已写入报表 -> {:s}".format(path.abspath("./report.csv")))
+            logging.info("会战数据已写入报表 -> {:s}".format(path.abspath("../report.csv")))
             logging.info("可以使用Excel或WPS等软件打开csv文件")
         except requests.exceptions.ConnectionError:
             raise RuntimeError("网络故障")
@@ -61,12 +61,13 @@ class Ctrl:
         r"""
         send network requests and get guild status
         """
+        while self.window is None:
+            sleep(1)
+        while self.window.updateCookies() is None:
+            sleep(1)
         tried = 0
         while True:
-            # cj = browser_cookie3.edge(domain_name=".bigfun.cn")
-            while self.window is None or self.window.cj is None:
-                sleep(1)
-            cj = self.window.cj
+            cj = self.window.updateCookies()
             r = requests.get(constants.GuildStatusURL, cookies=cj, headers=constants.Headers)
             guild_status = json.loads(r.text)
             if tried > self.max_retry:
@@ -74,7 +75,6 @@ class Ctrl:
             if guild_status['code'] == 0:
                 logging.info("成功读取公会数据")
                 self.cookiesJar = cj
-                self.window.valid = True
                 self.app.quit()
                 return guild_status
             elif guild_status['code'] == 401:

@@ -21,4 +21,4 @@ if __name__ == "__main__":
     tool = Ctrl()
     tool.exec()
 
-    fperr.close()
+    # fperr.close()

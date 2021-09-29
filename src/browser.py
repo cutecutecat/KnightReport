@@ -1,7 +1,6 @@
 import logging
 from http import cookiejar
-from threading import Thread
-from time import sleep
+from time import time
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import QUrl
@@ -15,8 +14,8 @@ class MainWindow(QMainWindow):
         super().__init__(*args, **kwargs)
 
         self.loaded = False
-        self.valid = False
-        self.cj = None
+        self.cookiesJar = None
+        self.cj_last_update = 0
 
         self.setWindowTitle('Login Browser')
         self.showMaximized()
@@ -28,19 +27,20 @@ class MainWindow(QMainWindow):
         self.browser.load(QUrl("https://www.bigfun.cn/tools/gt/"))
         self.setCentralWidget(self.browser)
 
-        self.work = Thread(target=self.checkCookies)
-        self.work.start()
+    def closeEvent(self, a0):
+        super().closeEvent(a0)
+        raise RuntimeError('浏览器被关闭')
 
     def checkLoaded(self):
         self.loaded = True
 
-    def checkCookies(self):
-        while not self.valid:
-            while not self.loaded:
-                sleep(1)
+    def updateCookies(self):
+        if not self.loaded:
+            return None
+        if time() - self.cj_last_update > 15:
+            self.cj_last_update = time()
             self.getCookiesByJs()
-            sleep(15)
-        # self.close()
+        return self.cookiesJar
 
     def getwidth(self):
         def zoom(content_width: int):
@@ -62,8 +62,8 @@ class MainWindow(QMainWindow):
 
     def collect(self, cookies_raw: str):
         cookies = cookies_raw.split('; ')
-        self.cj = cookiejar.CookieJar()
+        self.cookiesJar = cookiejar.CookieJar()
         for cookie_str in cookies:
             name, value = cookie_str.split('=')
-            self.cj.set_cookie(create_cookie(name, value, domain=".bigfun.cn"))
-        logging.info(f"尝试读取cookies, 有效key{tuple(dict_from_cookiejar(self.cj).keys())}")
+            self.cookiesJar.set_cookie(create_cookie(name, value, domain=".bigfun.cn"))
+        logging.info(f"尝试读取cookies, 有效key{tuple(dict_from_cookiejar(self.cookiesJar).keys())}")
