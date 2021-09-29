@@ -24,10 +24,6 @@ jobs:
       run: |
         python -m pip list
     
-    - name: List python packages
-      run: |
-        python -m pip list
-    
     - name: Build execuate
       run: |
         .\build.ps1
@@ -35,7 +31,7 @@ jobs:
     - name: Upload asset to release
       uses: softprops/action-gh-release@v1
       with:
-        files: dist/windows/KnightReport.exe
+        files: tmp/dist/KnightReport.exe
         tag_name: automatic
         
 #     - name: Auth to gitlab
