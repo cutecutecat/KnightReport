@@ -1,4 +1,4 @@
-name: Build with Pyinstaller
+name: Old
 
 on:
   push:
