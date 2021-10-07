@@ -1,29 +1,18 @@
 import json
 import logging
-import sys
-from os import path
+from os.path import abspath
 from http.cookiejar import CookieJar
-from threading import Thread
-from time import sleep
 from typing import Dict, Sequence, Set, Union
 
 import requests
-from PyQt5.QtWidgets import QApplication
 
-import constants
-from browser import MainWindow
-from utils import Info, Combat
+from config.constants import GuildStatusURL, DateStatusURL, Headers
+from ctrl.utils import Info, Combat
 
 
 class Ctrl:
-    def __init__(self):
-        self.max_retry = 20
-
-        self.cookiesJar: Union[CookieJar, None] = None
-        # ui
-        self.window: Union[MainWindow, None] = None
-        self.app: Union[QApplication, None] = None
-        self.browser = Thread(target=self.user_login)
+    def __init__(self, cj):
+        self.cookiesJar: CookieJar = cj
 
         self.dates: Sequence[str] = list()
         self.uid_name: Dict[int, str] = dict()
@@ -31,18 +20,11 @@ class Ctrl:
         self.combat: Union[Combat, None] = None
         self.all_uid: Set = set()
 
-    def user_login(self):
-        self.app = QApplication(sys.argv)
-        self.window = MainWindow()
-        self.window.show()
-        self.app.exec()
-
     def exec(self):
         r"""
         execute the whole generating stream
         """
         try:
-            self.browser.start()
             guild_status = self.get_guild()
             self.extract_guild_info(guild_status)
 
@@ -50,7 +32,7 @@ class Ctrl:
                 attack_status = self.get_date(date)
                 self.extract_date_info(i, attack_status)
             self.combat.marshal(self.person_info.values(), "./report.csv")
-            logging.info("会战数据已写入报表 -> {:s}".format(path.abspath("../report.csv")))
+            logging.info("会战数据已写入报表 -> {:s}".format(abspath("../report.csv")))
             logging.info("可以使用Excel或WPS等软件打开csv文件")
         except requests.exceptions.ConnectionError:
             raise RuntimeError("网络故障")
@@ -61,29 +43,17 @@ class Ctrl:
         r"""
         send network requests and get guild status
         """
-        while self.window is None:
-            sleep(1)
-        while self.window.updateCookies() is None:
-            sleep(1)
-        tried = 0
-        while True:
-            cj = self.window.updateCookies()
-            r = requests.get(constants.GuildStatusURL, cookies=cj, headers=constants.Headers)
-            guild_status = json.loads(r.text)
-            if tried > self.max_retry:
-                raise TimeoutError("超时{:d}s，未获得有效cookies".format(self.max_retry * 15))
-            if guild_status['code'] == 0:
-                logging.info("成功读取公会数据")
-                self.cookiesJar = cj
-                self.app.quit()
-                return guild_status
-            elif guild_status['code'] == 401:
-                logging.warning("cookies 无效, 请完成登录，等待15秒重试...")
-                sleep(15)
-                tried += 1
-                continue
-            else:
-                raise RuntimeError("未知的错误码 {:d}".format(guild_status['code']))
+        url = GuildStatusURL
+        r = requests.get(url, cookies=self.cookiesJar, headers=Headers)
+        guild_status = json.loads(r.text)
+        if guild_status['code'] == 0:
+            logging.info("成功读取公会数据")
+            return guild_status
+        elif guild_status['code'] == 401:
+            logging.error("cookies 失效, 请再次尝试，多次出现请进行反馈")
+            raise RuntimeError("cookies 失效, 请再次尝试，多次出现请进行反馈")
+        else:
+            raise RuntimeError("未知的错误码 {:d}".format(guild_status['code']))
 
     def extract_guild_info(self, guild_status: Dict):
         r"""
@@ -100,8 +70,8 @@ class Ctrl:
         r"""
         send network requests and get combat status of the day
         """
-        url = constants.DateStatusURL.format(date)
-        r = requests.get(url, cookies=self.cookiesJar, headers=constants.Headers)
+        url = DateStatusURL.format(date)
+        r = requests.get(url, cookies=self.cookiesJar, headers=Headers)
         attack_status = json.loads(r.text)
         if attack_status['code'] != 0:
             raise RuntimeError("未知的错误码 {:d}".format(attack_status['code']))
@@ -125,7 +95,12 @@ class Ctrl:
 
             hits = person_attack['damage_num']
             # check abnormal hits today
-            if hits > 3:
+            if hits > 3 and self.person_info[uid].omission[index - 1] < 0:
+                logging.warning("玩家uid {:d}于日期{:s} 额外跨日出刀{:d}，成功迁移到前一天"
+                                .format(uid, self.dates[index], hits - 3))
+                self.person_info[uid].omission[index - 1] += (hits - 3)
+                hits -= 3
+            elif hits > 3:
                 logging.warning("玩家uid {:d}于日期{:s} 异常出刀数{:d}"
                                 .format(uid, self.dates[index], hits))
                 logging.warning("记录当日战斗日志")
@@ -142,7 +117,7 @@ class Ctrl:
                 damage = damage_once['damage']
                 killed = damage_once['is_kill']
                 if killed != 0 and killed != 1:
-                    logging.error("玩家uid {:d}于日期{:s} 异常尾刀数{:d}"
+                    logging.error("玩家uid {:d}于日期{:s} 异常尾刀{:d}"
                                   .format(uid, self.dates[index], killed))
                     logging.error("记录当日战斗日志")
                     logging.error(attack_status)

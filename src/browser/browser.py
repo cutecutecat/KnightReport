@@ -1,21 +1,34 @@
+import json
 import logging
+import pickle
+import sys
 from http import cookiejar
-from time import time
+from threading import Thread
+from time import sleep
 
+from requests import get
 from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QUrl, pyqtSignal
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from requests.cookies import create_cookie
 from requests.utils import dict_from_cookiejar
 
+from config.constants import LoginURL, GuildStatusURL, Headers
+
 
 class MainWindow(QMainWindow):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    valid = pyqtSignal(bool)
+
+    def __init__(self, queue):
+        super().__init__()
 
         self.loaded = False
+
         self.cookiesJar = None
-        self.cj_last_update = 0
+        self.max_retry = 20
+        self.queue = queue
+
+        self.cookiesPicker = Thread(target=self.updateCookies)
 
         self.setWindowTitle('Login Browser')
         self.showMaximized()
@@ -23,24 +36,39 @@ class MainWindow(QMainWindow):
         self.browser = QWebEngineView()
         self.browser.page().loadFinished.connect(self.checkLoaded)
         self.browser.page().contentsSizeChanged.connect(self.getwidth)
+        self.valid.connect(super().closeEvent)
 
-        self.browser.load(QUrl("https://www.bigfun.cn/tools/gt/"))
+        self.browser.load(QUrl(LoginURL))
         self.setCentralWidget(self.browser)
 
-    def closeEvent(self, a0):
-        super().closeEvent(a0)
-        raise RuntimeError('浏览器被关闭')
+    def closeEvent(self, closeEvent) -> None:
+        super().closeEvent(closeEvent)
 
     def checkLoaded(self):
-        self.loaded = True
+        self.cookiesPicker.start()
 
     def updateCookies(self):
-        if not self.loaded:
-            return None
-        if time() - self.cj_last_update > 15:
-            self.cj_last_update = time()
+        tried = 0
+        while self.cookiesJar is None:
+            sleep(1)
             self.getCookiesByJs()
-        return self.cookiesJar
+        while True:
+            r = get(GuildStatusURL, cookies=self.cookiesJar, headers=Headers)
+            code_status = json.loads(r.text)['code']
+            if tried > self.max_retry:
+                raise TimeoutError("超时{:d}s，未获得有效cookies".format(self.max_retry * 15))
+            if code_status == 0:
+                logging.info("cookies验证通过")
+                self.queue.put(pickle.dumps([c for c in self.cookiesJar]), block=True)
+                sys.exit()
+            elif code_status == 401:
+                logging.warning("cookies 无效, 请完成登录，等待15秒重试...")
+                sleep(15)
+                self.getCookiesByJs()
+                tried += 1
+                continue
+            else:
+                raise RuntimeError("未知的错误码 {:d}".format(code_status))
 
     def getwidth(self):
         def zoom(content_width: int):

@@ -5,6 +5,9 @@ Headers = {
 
 }
 
+# pickle path for cookies file
+cookiesFile = 'cookies.pkl'
+
 #  web API for user login
 LoginURL = 'https://www.bigfun.cn/tools/gt/'
 
