@@ -1,0 +1,58 @@
+name: Build for Windows
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - uses: BSFishy/pip-action@v1
+        with:
+          requirements: requirements.txt
+
+      - name: List python packages
+        run: |
+          python -m pip list
+        shell: powershell
+
+      - name: prepare upx module
+        run: |
+          wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip -OutFile "upx-3.96-win64.zip"
+          Expand-Archive -Path upx-3.96-win64.zip -DestinationPath .
+        shell: powershell
+
+      - name: Build execuate
+        run: |
+          $upx=Resolve-Path -Path upx-3.96-win64
+          .\build\MacOS.sh -upx $upx
+        shell: powershell
+
+      - name: Upload asset to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ github.workspace }}/tmp/dist/KnightReport.dmg
+          tag_name: automatic
+
+    #     - name: Auth to gitlab
+    #       env:
+    #           TOKEN: ${{ secrets.GITLAB_TOKEN }}
+    #       run: |
+    #         curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
+
+#     - name: Upload asset to gitlab
+#       env:
+#           TOKEN: ${{ secrets.GITLAB_TOKEN }}
+#       run: |
+#         curl --header "PRIVATE-TOKEN: $TOKEN" \
+#         --upload-file "dist/windows/KnightReport.exe" \
+#         "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
