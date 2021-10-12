@@ -26,7 +26,7 @@ jobs:
 
     - name: prepare upx module
       run: |
-        Get-WebFile https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip
+        wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip -OutFile "upx-3.96-win64.zip"
         Expand-Archive -Path upx-3.96-win64.zip -DestinationPath .
 
     - name: Build execuate
