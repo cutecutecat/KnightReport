@@ -23,16 +23,19 @@ jobs:
     - name: List python packages
       run: |
         python -m pip list
+      shell: powershell
 
     - name: prepare upx module
       run: |
         wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip -OutFile "upx-3.96-win64.zip"
         Expand-Archive -Path upx-3.96-win64.zip -DestinationPath .
+      shell: powershell
 
     - name: Build execuate
       run: |
         $upx=Resolve-Path -Path upx-3.96-win64
         .\build\Windows.ps1 -upx $upx
+      shell: powershell
 
     - name: Upload asset to release
       uses: softprops/action-gh-release@v1
