@@ -32,7 +32,7 @@ class Ctrl:
                 attack_status = self.get_date(date)
                 self.extract_date_info(i, attack_status)
             self.combat.marshal(self.person_info.values(), "./report.csv")
-            logging.info("会战数据已写入报表 -> {:s}".format(abspath("../report.csv")))
+            logging.info("会战数据已写入报表 -> {:s}".format(abspath("./report.csv")))
             logging.info("可以使用Excel或WPS等软件打开csv文件")
         except requests.exceptions.ConnectionError:
             raise RuntimeError("网络故障")

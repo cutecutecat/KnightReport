@@ -1,4 +1,4 @@
-name: Build with Pyinstaller
+name: Build for Windows
 
 on:
   push:

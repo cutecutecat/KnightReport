@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         self.cookiesJar = None
         self.max_retry = 20
         self.queue = queue
+        self.pickerStarted = False
 
         self.cookiesPicker = Thread(target=self.updateCookies)
 
@@ -45,7 +46,9 @@ class MainWindow(QMainWindow):
         super().closeEvent(closeEvent)
 
     def checkLoaded(self):
-        self.cookiesPicker.start()
+        if not self.pickerStarted:
+            self.pickerStarted = True
+            self.cookiesPicker.start()
 
     def updateCookies(self):
         tried = 0

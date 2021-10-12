@@ -7,7 +7,7 @@ from time import sleep
 from browser.intro import initBrowser
 from ctrl.intro import initCtrl
 
-fperr = open("KnightReport.err", "a")
+fperr = open("KnightReport.err.log", "a")
 sys.stderr = fperr
 
 logging.basicConfig(level=logging.INFO,
@@ -16,7 +16,6 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
 if multiprocessing.current_process().name == 'MainProcess':
-    print(multiprocessing.current_process().name)
     version = "0.1.2"
     website = "https://github.com/cutecutecat/KnightReport"
 
