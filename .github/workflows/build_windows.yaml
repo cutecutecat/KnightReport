@@ -15,7 +15,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
-          
+
     - uses: BSFishy/pip-action@v1
       with:
         requirements: requirements.txt
@@ -23,11 +23,17 @@ jobs:
     - name: List python packages
       run: |
         python -m pip list
-    
+
+    - name: prepare upx module
+      run: |
+        Get-WebFile https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip
+        Expand-Archive -Path upx-3.96-win64.zip -DestinationPath .
+
     - name: Build execuate
       run: |
-        .\build.ps1
-        
+        $upx=Resolve-Path -Path upx-3.96-win64
+        .\build\Windows.ps1 -upx $upx
+
     - name: Upload asset to release
       uses: softprops/action-gh-release@v1
       with:

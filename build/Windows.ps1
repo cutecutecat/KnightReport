@@ -1,3 +1,4 @@
+param($upx)
 $OUTPUT_PATH="./tmp"
 $EXIST=Test-Path $OUTPUT_PATH
 $FILES=Get-ChildItem -Path "src/" -Filter *.py -r | % { $_.FullName }
@@ -7,5 +8,5 @@ if ($EXIST -eq "True"){
 }
 mkdir tmp
 cd tmp
-pyinstaller -Fw $FILES  -n KnightReport
+pyinstaller -Fw $FILES -c -n KnightReport --upx-dir $upx
 cd ..
