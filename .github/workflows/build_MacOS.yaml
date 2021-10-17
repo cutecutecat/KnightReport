@@ -35,7 +35,7 @@ jobs:
           old="proc.communicate(timeout=60)"
           new="proc.communicate(timeout=600)"
           path="${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py"
-          ls "${{ env.pythonLocation }}/lib"
+          ls "${{ env.pythonLocation }}/lib/Python3.9/site-packages/PyInstaller/compat.py"
           sed -i "s/$old/$new/" $path
         shell: bash
 
