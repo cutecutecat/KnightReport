@@ -30,6 +30,12 @@ jobs:
         wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip -OutFile "upx-3.96-win64.zip"
         Expand-Archive -Path upx-3.96-win64.zip -DestinationPath .
       shell: powershell
+    
+    - name: repair pyinstaller subprocess caller compat
+      run: |
+        longer="        out = proc.communicate(timeout=600)[0]"
+        sed '332c $longer' ${{ env.workspace }}\lib\site-packages\PyInstaller\compat.py"
+      shell: powershell
 
     - name: Build execuate
       run: |
