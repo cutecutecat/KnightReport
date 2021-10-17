@@ -41,7 +41,7 @@ jobs:
       - name: Build execuate
         run: |
           upx=$(cd "$(dirname "$0")"; pwd -P)
-          .\build\MacOS.sh -upx $upx
+          ./build/MacOS.sh -upx $upx
         shell: bash
 
       - name: Upload asset to release
