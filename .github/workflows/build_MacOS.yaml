@@ -32,8 +32,8 @@ jobs:
         
       - name: repair pyinstaller subprocess caller compat
         run: |
-          $old="proc.communicate(timeout=60)[0]"
-          $new="proc.communicate(timeout=600)[0]"
+          $old="proc.communicate(timeout=60)"
+          $new="proc.communicate(timeout=600)"
           sed -i "s/$old/$new" "${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py"
         shell: bash
 
