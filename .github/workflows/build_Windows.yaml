@@ -33,8 +33,9 @@ jobs:
     
     - name: repair pyinstaller subprocess caller compat
       run: |
-        longer="        out = proc.communicate(timeout=600)[0]"
-        sed '332c $longer' "${{ env.workspace }}\lib\site-packages\PyInstaller\compat.py"
+        $old="proc.communicate(timeout=600)[0]"
+        $new="proc.communicate(timeout=600)[0]"
+        get-content "${{ env.workspace }}\lib\site-packages\PyInstaller\compat.py" | %{$_ -replace $old, $new}
       shell: powershell
 
     - name: Build execuate
