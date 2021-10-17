@@ -33,7 +33,7 @@ jobs:
     
     - name: repair pyinstaller subprocess caller compat
       run: |
-        $old="proc.communicate(timeout=60)"
+        $old="proc.communicate\(timeout=60\)"
         $new="proc.communicate(timeout=600)"
         $path="${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py"
         $newContent=Get-content $path | %{$_ -replace $old, $new}
