@@ -35,7 +35,7 @@ jobs:
       run: |
         $old="proc.communicate(timeout=60)"
         $new="proc.communicate(timeout=600)"
-        $path="${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py
+        $path="${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py"
         Set-Content c:\temp\test.txt
         get-content $path.replace($old, $new) | Set-Content $path
       shell: powershell
