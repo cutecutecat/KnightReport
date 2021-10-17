@@ -37,7 +37,6 @@ jobs:
         $new="proc.communicate(timeout=600)"
         $path="${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py"
         $newContent=Get-content $path | %{$_ -replace $old, $new}
-        echo $newContent
         Set-Content $path $newContent
       shell: powershell
 
