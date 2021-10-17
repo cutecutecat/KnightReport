@@ -1,4 +1,4 @@
-name: Build for Windows
+name: Build binary for Windows
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
     - name: repair pyinstaller subprocess caller compat
       run: |
         longer="        out = proc.communicate(timeout=600)[0]"
-        sed '332c $longer' ${{ env.workspace }}\lib\site-packages\PyInstaller\compat.py"
+        sed '332c $longer' "${{ env.workspace }}\lib\site-packages\PyInstaller\compat.py"
       shell: powershell
 
     - name: Build execuate
