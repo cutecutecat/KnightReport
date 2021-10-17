@@ -35,7 +35,7 @@ jobs:
       run: |
         $old="proc.communicate(timeout=600)[0]"
         $new="proc.communicate(timeout=600)[0]"
-        get-content "${{ env.workspace }}\lib\site-packages\PyInstaller\compat.py" | %{$_ -replace $old, $new}
+        get-content "${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py" | %{$_ -replace $old, $new}
       shell: powershell
 
     - name: Build execuate
