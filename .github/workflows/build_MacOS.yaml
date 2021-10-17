@@ -34,7 +34,7 @@ jobs:
         run: |
           old="proc.communicate(timeout=60)"
           new="proc.communicate(timeout=600)"
-          sed -i "s/$old/$new" "${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py"
+          sed -e "s/$old/$new" "${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py"
         shell: bash
 
       - name: Build execuate
