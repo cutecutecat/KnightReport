@@ -1,5 +1,4 @@
-name: Build for Windows
-
+name: Build binary for MacOS
 on:
   push:
     branches: [ main ]
@@ -23,19 +22,26 @@ jobs:
       - name: List python packages
         run: |
           python -m pip list
-        shell: powershell
+        shell: bash
 
       - name: prepare upx module
         run: |
-          wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip -OutFile "upx-3.96-win64.zip"
-          Expand-Archive -Path upx-3.96-win64.zip -DestinationPath .
-        shell: powershell
+          wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip 
+          unzip upx-3.96-win64.zip
+        shell: bash
+        
+      - name: repair pyinstaller subprocess caller compat
+        run: |
+          $old="proc.communicate(timeout=60)[0]"
+          $new="proc.communicate(timeout=600)[0]"
+          sed -i "s/$old/$new" "${{ env.pythonLocation }}\lib\site-packages\PyInstaller\compat.py"
+        shell: bash
 
       - name: Build execuate
         run: |
           $upx=Resolve-Path -Path upx-3.96-win64
           .\build\MacOS.sh -upx $upx
-        shell: powershell
+        shell: bash
 
       - name: Upload asset to release
         uses: softprops/action-gh-release@v1
