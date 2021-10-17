@@ -41,6 +41,7 @@ jobs:
       - name: Build execuate
         run: |
           upx=$(cd "$(dirname "$0")"; pwd -P)
+          chmod +x ./build/MacOS.s
           ./build/MacOS.sh -upx $upx
         shell: bash
 
