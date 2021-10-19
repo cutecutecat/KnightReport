@@ -42,7 +42,7 @@ jobs:
           upx="/usr/local/Cellar/upx/3.96_1/bin"
           ls $upx
           chmod +x ./build/MacOS.sh
-          ./build/MacOS.sh -upx $upx
+          ./build/MacOS.sh $upx
         shell: bash
 
       - name: Upload asset to release
