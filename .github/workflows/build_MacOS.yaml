@@ -39,8 +39,8 @@ jobs:
 
       - name: Build execuate
         run: |
-          upx="/usr/local/Cellar/upx/3.96_1/bin"
-          ls $upx
+          upx=$(brew --prefix upx)
+          echo "upx ins installed at $upx"
           chmod +x ./build/MacOS.sh
           ./build/MacOS.sh $upx
         shell: bash
