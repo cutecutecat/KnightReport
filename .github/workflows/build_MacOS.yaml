@@ -24,11 +24,9 @@ jobs:
           python -m pip list
         shell: bash
       
-      # 没有可用的mac-upx版本，先就这样吧，等我先写好自动构建
       - name: prepare upx module
         run: |
-          wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip 
-          unzip upx-3.96-win64.zip
+          brew install upx
         shell: bash
         
       - name: repair pyinstaller subprocess caller compat
