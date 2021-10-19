@@ -40,6 +40,7 @@ jobs:
       - name: Build execuate
         run: |
           upx="/usr/local/Cellar/upx/3.96_1"
+          ls $upx
           chmod +x ./build/MacOS.sh
           ./build/MacOS.sh -upx $upx
         shell: bash
