@@ -39,7 +39,7 @@ jobs:
 
       - name: Build execuate
         run: |
-          upx=$(cd "$(dirname "$0")"; pwd -P)
+          upx="/usr/local/Cellar/upx/3.96_1"
           chmod +x ./build/MacOS.sh
           ./build/MacOS.sh -upx $upx
         shell: bash
