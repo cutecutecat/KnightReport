@@ -1,9 +1,7 @@
 name: Build binary for Windows
 on:
-  workflow_run:
-    workflows: ["Clear assets inside automatic"]
-    types:
-      - completed
+  push:
+    branches: [ main ]
 
 jobs:
   build:
