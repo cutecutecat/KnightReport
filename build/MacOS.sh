@@ -5,7 +5,7 @@ echo $FILES
 mkdir tmp
 cd tmp
 # pyinstaller issue 4341-> can only use onedir mode
-pyinstaller -Dw $FILES -c -n KnightReport --upx-dir $0
+pyinstaller -Dw $FILES -c -n KnightReport --upx-dir $1
 cd dist
 hdiutil create ./KnightReport.dmg -srcfolder KnightReport -ov
 cd ..
