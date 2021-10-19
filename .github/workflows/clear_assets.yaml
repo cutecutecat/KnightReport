@@ -1,4 +1,4 @@
-name: Build binary for MacOS
+name: Clear assets inside automatic
 on:
   push:
     branches: [ main ]
