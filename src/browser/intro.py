@@ -1,15 +1,21 @@
 import logging
-import sys
-
-from PyQt5.QtWidgets import QApplication
-
-from browser.browser import MainWindow
+from os.path import exists
+from browser.method_auto import MethodAuto
+from browser.method_file import MethodFile
 
 
-def initBrowser(queue):
-    logging.info("启动浏览器进行登录，获得用户cookies")
-    logging.info("登录完成后浏览器会自行关闭，请勿关闭窗口")
-    app = QApplication(sys.argv)
-    window = MainWindow(queue)
-    window.show()
-    app.exec()
+def initBrowser():
+    logging.info("开始尝试，获得用户cookies")
+    # 如果当前目录下存在cookies.txt，从其中读取cookies
+    # 否则，尝试自动获取cookies
+    if exists('cookies.txt'):
+        logging.info("当前路径下发现cookies.txt，尝试从文件中获得cookies")
+        method = MethodFile()
+        try:
+            cj = method.fetch_cookies()
+            return cj
+        except:
+            logging.warning("cookies.txt解析失败，请检查文件内容")
+    method = MethodAuto()
+    cj = method.fetch_cookies()
+    return cj
