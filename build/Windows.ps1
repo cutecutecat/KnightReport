@@ -8,5 +8,5 @@ if ($EXIST -eq "True"){
 }
 mkdir tmp
 cd tmp
-pyinstaller -Fw $FILES -c -n KnightReport --upx-dir $upx
+pyinstaller -Fw $FILES -c -n KnightReport-win --upx-dir $upx
 cd ..

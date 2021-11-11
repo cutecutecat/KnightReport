@@ -5,9 +5,6 @@ Headers = {
 
 }
 
-# pickle path for cookies file
-cookiesFile = 'cookies.pkl'
-
 #  web API for user login
 LoginURL = 'https://www.bigfun.cn/tools/gt/'
 
@@ -16,3 +13,5 @@ GuildStatusURL = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log-filt
 
 # web API for combat status(need argument date)
 DateStatusURL = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report%2Fa&date={:s}"
+
+EdgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"

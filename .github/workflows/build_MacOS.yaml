@@ -40,7 +40,7 @@ jobs:
       - name: Upload asset to release
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ github.workspace }}/tmp/dist/KnightReport.dmg
+          files: ${{ github.workspace }}/tmp/dist/KnightReport-mac.dmg
           tag_name: automatic
 
     #     - name: Auth to gitlab

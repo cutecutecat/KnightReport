@@ -28,12 +28,13 @@ class Ctrl:
             guild_status = self.get_guild()
             self.extract_guild_info(guild_status)
 
+            self.dates = sorted(self.dates)
             for i, date in enumerate(self.dates):
                 attack_status = self.get_date(date)
                 self.extract_date_info(i, attack_status)
-            self.combat.marshal(self.person_info.values(), "./report.csv")
-            logging.info("会战数据已写入报表 -> {:s}".format(abspath("./report.csv")))
-            logging.info("可以使用Excel或WPS等软件打开csv文件")
+            self.combat.marshal(self.person_info.values(), "./report.xlsx")
+            logging.info("会战数据已写入报表 -> {:s}".format(abspath("./report.xlsx")))
+            logging.info("可以使用Excel或WPS等软件打开xlsx文件")
         except requests.exceptions.ConnectionError:
             raise RuntimeError("网络故障")
         except ValueError:
@@ -96,12 +97,12 @@ class Ctrl:
             hits = person_attack['damage_num']
             # check abnormal hits today
             if hits > 3 and self.person_info[uid].omission[index - 1] < 0:
-                logging.warning("玩家uid {:d}于日期{:s} 额外跨日出刀{:d}，成功迁移到前一天"
+                logging.warning("玩家uid {:d}于日期{:s}额外跨日出刀{:d}，成功迁移到前一天"
                                 .format(uid, self.dates[index], hits - 3))
                 self.person_info[uid].omission[index - 1] += (hits - 3)
                 hits -= 3
             elif hits > 3:
-                logging.warning("玩家uid {:d}于日期{:s} 异常出刀数{:d}"
+                logging.warning("玩家uid {:d}于日期{:s}异常出刀数{:d}"
                                 .format(uid, self.dates[index], hits))
                 logging.warning("记录当日战斗日志")
                 logging.warning(attack_status)
