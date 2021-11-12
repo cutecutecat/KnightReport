@@ -1,6 +1,8 @@
+import os
+
 import json
 import logging
-from os.path import abspath
+from os.path import join
 from http.cookiejar import CookieJar
 from typing import Dict, Sequence, Set, Union
 
@@ -8,6 +10,7 @@ import requests
 
 from config.constants import GuildStatusURL, DateStatusURL, Headers
 from ctrl.utils import Info, Combat
+from config.utils import fetch_cwd
 
 
 class Ctrl:
@@ -32,8 +35,9 @@ class Ctrl:
             for i, date in enumerate(self.dates):
                 attack_status = self.get_date(date)
                 self.extract_date_info(i, attack_status)
-            self.combat.marshal(self.person_info.values(), "./report.xlsx")
-            logging.info("会战数据已写入报表 -> {:s}".format(abspath("./report.xlsx")))
+            real_path = join(fetch_cwd(), "report.xlsx")
+            self.combat.marshal(self.person_info.values(), real_path)
+            logging.info("会战数据已写入报表 -> {:s}".format(real_path))
             logging.info("可以使用Excel或WPS等软件打开xlsx文件")
         except requests.exceptions.ConnectionError:
             raise RuntimeError("网络故障")

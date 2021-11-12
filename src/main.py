@@ -1,15 +1,17 @@
 import logging
 import multiprocessing
 import sys
+from os.path import join
 
 from browser.intro import initBrowser
 from ctrl.intro import initCtrl
+from config.utils import fetch_cwd
 
-fperr = open("KnightReport.err.log", "a")
+fperr = open(join(fetch_cwd(), "KnightReport.err.log"), "a")
 sys.stderr = fperr
 
 logging.basicConfig(level=logging.INFO,
-                    filename='KnightReport.log',
+                    filename=join(fetch_cwd(), 'KnightReport.log'),
                     filemode='a',
                     format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
