@@ -29,21 +29,16 @@ class MethodAuto:
 
     @staticmethod
     def try_browser(browser_list: list) -> str:
-        ctrl = None
         use = ""
         for browser in browser_list:
-            try:
-                ctrl = webbrowser.get(using=browser)
+            ctrl = webbrowser.get(using=browser)
+            ret = ctrl.open(LoginURL)
+            if ret:
+                logging.info(f"成功启动{browser}浏览器")
                 use = browser
-            except webbrowser.Error as e:
+            else:
                 logging.warning(f"尝试启动{browser}浏览器失败")
-                logging.warning(e)
                 continue
-            logging.info(f"成功启动{browser}浏览器")
-            break
-        if ctrl is None:
-            return ""
-        ctrl.open(LoginURL)
         return use
 
     def _select_browser_cookies(self):
