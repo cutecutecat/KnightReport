@@ -5,6 +5,4 @@ echo $FILES
 mkdir tmp
 cd tmp
 pyinstaller -Fw $FILES -c -n KnightReport-mac --upx-dir $1
-mkdir -p KnightReport
-cp KnightReport-mac ./KnightReport/KnightReport-mac
-hdiutil create ./KnightReport-mac.dmg -srcfolder KnightReport -ov
+hdiutil create ./KnightReport-mac.dmg -srcfolder dist -ov
