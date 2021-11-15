@@ -9,13 +9,12 @@
 
 只需要双击一下，就可以生成详细的会战报表，方便大家详细了解自己的总出刀数、对各个boss出刀数、缺刀日期等数据。
 
-[TOC]
-
 ## 准备工作
 
-* 依赖Windows系统和Edge浏览器（macOS/Linux上的Edge理论上也行，但咱懒得测试了）
-* 如果需要从源码运行，除上述需求以外，需要准备`Python`环境并安装`browser-cookies3`包
-* 如果需要从源码打包，除上述需求以外，还需要安装`pyinstaller`包
+* 如果从Windows系统运行，需要准备好Chrome浏览器或者Edge浏览器（二选一即可）
+* 如果从MacOS系统运行，需要准备好Chrome浏览器（必要）
+* 如果需要从源码运行，除上述需求以外，还需要运行`pip install -f requirments.txt`安装依赖项
+* 如果需要从源码打包，除上述需求以外，同样需要运行`pip install -f requirments.txt`安装依赖项
 
 ## 如何运行
 
@@ -23,7 +22,9 @@
 
 ### 直接运行
 
-从Releases中下载可执行文件`KnightReport.exe`，双击运行
+* 如果使用的是Windows系统，从Releases中下载可执行文件`KnightReport-win.exe`，双击运行
+
+* 如果使用的是MacOS系统，从Releases中下载可执行文件`KnightReport-mac.dmg`，双击挂载后进入，双击`KnightReport-mac`运行
 
 ### 从源码运行
 
@@ -50,6 +51,14 @@ python ../src/main.py
 错误信息将会生成在当前目录下的`KnightReport.err`
 
 会战报表将会生成在当前目录下的`report.csv`
+
+## 注意事项
+
+需要注意的是，在Windows系统下，程序会优先尝试使用Chrome浏览器，如果启动失败，会再次尝试启动Edge浏览器。
+
+在MacOS系统下，程序只会尝试启动Chrome浏览器。
+
+如果无法启动浏览器，或启动浏览器后仍无法获得cookies（例如遇到BrowerCookiesError错误），请参考[从文件输入cookies](doc/file-cookies.md)
 
 ## 数据描述
 
