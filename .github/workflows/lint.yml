@@ -14,11 +14,11 @@ jobs:
         uses: alexanderdamiani/pylinter@v1.3.0
         with:
           # directory to run linting on
-          python-root: '.'
+          python-root: 'src'
           # flake8 flags
           flake8-flags: '--exclude=testcase/*'
           # mypy flags
-          mypy-flags: .
+          mypy-flags: '--exclude=testcase/*'
           # optional exit on isort errors
           fail-on-isort: true
           # skip flake8 checks
