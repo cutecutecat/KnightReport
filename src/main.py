@@ -13,7 +13,8 @@ sys.stderr = fperr
 logging.basicConfig(level=logging.INFO,
                     filename=join(fetch_cwd(), 'KnightReport.log'),
                     filemode='a',
-                    format='%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s')
+                    format='%(asctime)s - %(pathname)s[line:%(lineno)d]'
+                           ' - %(levelname)s: %(message)s')
 
 if multiprocessing.current_process().name == 'MainProcess':
     version = "0.1.2"

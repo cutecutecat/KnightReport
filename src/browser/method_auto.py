@@ -19,8 +19,10 @@ class MethodAuto:
             self.use = self.try_browser(['chrome'])
         elif sys.platform == 'win32':
             webbrowser.register('chrome', None,
-                                webbrowser.GenericBrowser(['powershell.exe', 'start chrome %s']))
-            webbrowser.register('edge', None, webbrowser.BackgroundBrowser(EdgePath))
+                                webbrowser.GenericBrowser(
+                                    ['powershell.exe', 'start chrome %s']))
+            webbrowser.register('edge', None,
+                                webbrowser.BackgroundBrowser(EdgePath))
             self.use = self.try_browser(['chrome', 'edge'])
         else:
             raise OSError("unsupported OS system")

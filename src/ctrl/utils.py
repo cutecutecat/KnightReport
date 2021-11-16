@@ -42,15 +42,18 @@ class Info:
         boss_status = []
         for name in boss_names:
             if self.boss_hits.__contains__(name):
-                boss_status.extend([self.boss_hits[name], self.boss_damage[name]])
+                boss_status.extend(
+                    [self.boss_hits[name], self.boss_damage[name]])
             else:
                 boss_status.extend([0, 0])
 
         date_status = [self.omit_mapping(omit) for omit in self.omission]
 
         avg_damage = '{:d}'.format(
-            self.not_killed_damage // (self.hits - self.kill)) if self.hits - self.kill > 0 else '-'
-        status = [self.uid, self.name, self.hits, self.damage, self.kill, avg_damage]
+            self.not_killed_damage // (self.hits - self.kill)) \
+            if self.hits - self.kill > 0 else '-'
+        status = [self.uid, self.name, self.hits,
+                  self.damage, self.kill, avg_damage]
         status.extend(boss_status)
         status.extend(date_status)
         return status
@@ -96,7 +99,8 @@ class Combat:
             ws.append(person.to_list(self.boss_name))
 
         # 设置数字保存格式为字符串
-        for i, col in enumerate(ws.iter_cols(min_col=1, max_col=len(headers) + 1)):
+        col_iter = ws.iter_cols(min_col=1, max_col=len(headers) + 1)
+        for i, col in enumerate(col_iter):
             for cell in col:
                 cell.number_format = numbers.FORMAT_TEXT
         wb.save(filename)

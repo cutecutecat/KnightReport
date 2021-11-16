@@ -14,7 +14,7 @@ jobs:
         uses: alexanderdamiani/pylinter@v1.3.0
         with:
           # directory to run linting on
-          python-root: src
+          python-root: './src'
           # flake8 flags
           flake8-flags: .
           # mypy flags

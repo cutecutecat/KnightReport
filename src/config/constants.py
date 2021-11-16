@@ -9,9 +9,11 @@ Headers = {
 LoginURL = 'https://www.bigfun.cn/tools/gt/'
 
 #  web API for guild status
-GuildStatusURL = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-log-filter%2Fa"
+GuildStatusURL = "https://www.bigfun.cn/api/feweb?" \
+                 "target=kan-gong-guild-log-filter%2Fa"
 
 # web API for combat status(need argument date)
-DateStatusURL = "https://www.bigfun.cn/api/feweb?target=kan-gong-guild-report%2Fa&date={:s}"
+DateStatusURL = "https://www.bigfun.cn/api/feweb?" \
+                "target=kan-gong-guild-report%2Fa&date={:s}"
 
-EdgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+EdgePath = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"

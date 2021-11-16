@@ -1,5 +1,3 @@
-import os
-
 import json
 import logging
 from os.path import join
@@ -67,7 +65,8 @@ class Ctrl:
         colleagues = guild_status['data']['member']
         self.dates = guild_status['data']['date']
         self.uid_name = {person['id']: person['name'] for person in colleagues}
-        self.person_info = {uid: Info(uid, name, len(self.dates)) for uid, name in self.uid_name.items()}
+        self.person_info = {uid: Info(uid, name, len(self.dates))
+                            for uid, name in self.uid_name.items()}
         self.combat = Combat(self.dates)
         self.all_uid = set(self.uid_name.keys())
 

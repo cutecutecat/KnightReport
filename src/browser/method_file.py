@@ -8,7 +8,8 @@ class MethodFile:
             self.cookies_raw = f.read()
 
     def fetch_cookies(self):
-        cookies = self.cookies_raw.strip(' \'').rstrip(' \'').replace(' ', '').split(';')
+        cookies = self.cookies_raw.strip(' \'') \
+            .rstrip(' \'').replace(' ', '').split(';')
         cj = cookiejar.CookieJar()
         for cookie in cookies:
             name, value = cookie.split('=')

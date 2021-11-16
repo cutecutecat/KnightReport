@@ -14,7 +14,7 @@ def initBrowser():
         try:
             cj = method.fetch_cookies()
             return cj
-        except:
+        except Exception:
             logging.warning("cookies.txt解析失败，请检查文件内容")
     method = MethodAuto()
     cj = method.fetch_cookies()
