@@ -7,53 +7,55 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-  
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - uses: BSFishy/pip-action@v1
-      with:
-        requirements: requirements.txt
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
 
-    - name: List python packages
-      run: |
-        python -m pip list
-      shell: powershell
+      - uses: BSFishy/pip-action@v1
+        with:
+          requirements: requirements.txt
 
-    - name: prepare upx module
-      run: |
-        wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip -OutFile "upx-3.96-win64.zip"
-        Expand-Archive -Path upx-3.96-win64.zip -DestinationPath .
-      shell: powershell
+      - name: List python packages
+        run: |
+          python -m pip list
+        shell: powershell
+
+      - name: prepare upx module
+        run: |
+          wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-win64.zip -OutFile "upx-3.96-win64.zip"
+          Expand-Archive -Path upx-3.96-win64.zip -DestinationPath .
+        shell: powershell
 
 
-    - name: Build execuate
-      run: |
-        $upx=Resolve-Path -Path upx-3.96-win64
-        .\build\Windows.ps1 -upx $upx
-      shell: powershell
+      - name: Build execuate
+        run: |
+          $upx=Resolve-Path -Path upx-3.96-win64
+          .\build\Windows.ps1 -upx $upx
+        shell: powershell
 
-    - name: Upload asset to release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: ${{ github.workspace }}/tmp/dist/KnightReport-win.exe
-        tag_name: automatic
+      - name: Upload asset to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ github.workspace }}/tmp/dist/KnightReport-win.exe
+          tag_name: automatic
 
-    - name: Auth to gitlab
-      env:
-        TOKEN: ${{ secrets.GITLAB_TOKEN }}
-      run: |
-        curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
+      - name: Auth to gitlab
+        env:
+          TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
+        shell: powershell
 
-    - name: Upload asset to gitlab
-      env:
-        TOKEN: ${{ secrets.GITLAB_TOKEN }}
-        PATH: ${{ github.workspace }}/tmp/dist/KnightReport-win.exe
-      run: |
-        curl --header "PRIVATE-TOKEN: $TOKEN" \
-        --upload-file "$PATH" \
-        "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport-win.exe?status=default"
+      - name: Upload asset to gitlab
+        env:
+          OKEN: ${{ secrets.GITLAB_TOKEN }}
+          PATH: ${{ github.workspace }}/tmp/dist/KnightReport-win.exe
+        run: |
+          curl --header "PRIVATE-TOKEN: $TOKEN" `
+          --upload-file "$PATH" `
+          "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
+        shell: powershell
