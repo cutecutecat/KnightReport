@@ -45,10 +45,10 @@ jobs:
 
       - name: Upload asset to gitlab
         env:
-          OKEN: ${{ secrets.GITLAB_TOKEN }}
-          PATH: ${{ github.workspace }}/tmp/dist/KnightReport-win.exe
+          TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          FILE: ${{ github.workspace }}/tmp/dist/KnightReport-win.exe
         run: |
-          curl --header "PRIVATE-TOKEN: $TOKEN" `
-          --upload-file "$PATH" `
+          curl --header "PRIVATE-TOKEN: $TOKEN" \
+          --upload-file "$FILE" \
           "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
         shell: bash
