@@ -16,7 +16,7 @@ jobs:
           # directory to run linting on
           python-root: './src'
           # flake8 flags
-          flake8-flags: .
+          flake8-flags: '--exclude=testcase/*'
           # mypy flags
           mypy-flags: .
           # optional exit on isort errors
