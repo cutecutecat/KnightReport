@@ -48,7 +48,7 @@ jobs:
           TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: |
           curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
-        shell: powershell
+        shell: cmd
 
       - name: Upload asset to gitlab
         env:
@@ -58,4 +58,4 @@ jobs:
           curl --header "PRIVATE-TOKEN: $TOKEN" `
           --upload-file "$PATH" `
           "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
-        shell: powershell
+        shell: cmd

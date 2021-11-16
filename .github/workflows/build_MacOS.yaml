@@ -56,6 +56,7 @@ jobs:
           TOKEN: ${{ secrets.GITLAB_TOKEN }}
           PATH: ${{ github.workspace }}/tmp/KnightReport-mac.dmg
         run: |
+          brew install curl
           curl --header "PRIVATE-TOKEN: $TOKEN" \
           --upload-file "$PATH" \
           "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport-mac.dmg?status=default"
