@@ -4,7 +4,7 @@ from os.path import join
 from http.cookiejar import CookieJar
 from typing import Dict, Sequence, Set
 
-import requests
+import requests  # type: ignore
 
 from config.constants import GuildStatusURL, DateStatusURL, Headers
 from ctrl.utils import Info, Combat
