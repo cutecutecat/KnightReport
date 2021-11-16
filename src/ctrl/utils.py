@@ -1,4 +1,4 @@
-from typing import Sequence, Dict, List
+from typing import Dict, List, Sequence
 
 from openpyxl import Workbook  # type: ignore
 from openpyxl.styles import numbers  # type: ignore

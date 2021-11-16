@@ -1,5 +1,5 @@
-from os.path import abspath, dirname
 import sys
+from os.path import abspath, dirname
 
 
 def fetch_cwd():

@@ -4,8 +4,8 @@ import sys
 from os.path import join
 
 from browser.intro import initBrowser
-from ctrl.intro import initCtrl
 from config.utils import fetch_cwd
+from ctrl.intro import initCtrl
 
 fperr = open(join(fetch_cwd(), "KnightReport.err.log"), "a")
 sys.stderr = fperr

@@ -1,5 +1,6 @@
 import logging
 from os.path import exists
+
 from browser.method_auto import MethodAuto
 from browser.method_file import MethodFile
 
