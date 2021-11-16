@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO,
                            ' - %(levelname)s: %(message)s')
 
 if multiprocessing.current_process().name == 'MainProcess':
-    version = "0.1.2"
+    version = "0.9"
     website = "https://github.com/cutecutecat/KnightReport"
 
     logging.info("坎公骑冠剑————超级骑士报表————v{:s}".format(version))
