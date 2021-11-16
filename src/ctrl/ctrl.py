@@ -18,7 +18,7 @@ class Ctrl:
         self.dates: Sequence[str] = list()
         self.uid_name: Dict[int, str] = dict()
         self.person_info: Dict[int, Info] = dict()
-        self.combat: Union[Combat, None] = None
+        self.combat: Combat
         self.all_uid: Set = set()
 
     def exec(self):

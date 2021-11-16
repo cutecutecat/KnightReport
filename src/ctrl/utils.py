@@ -1,7 +1,7 @@
 from typing import Sequence, Dict, List
 
-from openpyxl import Workbook
-from openpyxl.styles import numbers
+from openpyxl import Workbook  # type: ignore
+from openpyxl.styles import numbers  # type: ignore
 
 
 class Info:
@@ -72,8 +72,8 @@ class Info:
 class Combat:
     def __init__(self, dates: Sequence[str]):
         self.dates = dates
-        self.boss_name = list()
-        self._boss_set = set()
+        self.boss_name: list = list()
+        self._boss_set: set = set()
 
     def has_boss(self, name: str):
         return self._boss_set.__contains__(name)

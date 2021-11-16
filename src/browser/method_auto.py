@@ -4,8 +4,8 @@ import sys
 import webbrowser
 from time import sleep
 
-import browser_cookie3
-import requests
+import browser_cookie3  # type: ignore
+import requests  # type: ignore
 
 from config.constants import LoginURL, EdgePath, Headers, GuildStatusURL
 
