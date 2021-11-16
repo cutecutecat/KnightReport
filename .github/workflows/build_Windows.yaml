@@ -42,17 +42,18 @@ jobs:
       with:
         files: ${{ github.workspace }}/tmp/dist/KnightReport-win.exe
         tag_name: automatic
-        
-#     - name: Auth to gitlab
-#       env:
-#           TOKEN: ${{ secrets.GITLAB_TOKEN }}
-#       run: |
-#         curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
-    
-#     - name: Upload asset to gitlab
-#       env:
-#           TOKEN: ${{ secrets.GITLAB_TOKEN }}
-#       run: |
-#         curl --header "PRIVATE-TOKEN: $TOKEN" \
-#         --upload-file "dist/windows/KnightReport.exe" \
-#         "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport.exe?status=default"
+
+    - name: Auth to gitlab
+      env:
+        TOKEN: ${{ secrets.GITLAB_TOKEN }}
+      run: |
+        curl --header "PRIVATE-TOKEN: $TOKEN" "https://gitlab.com/api/v4/projects/29590976"
+
+    - name: Upload asset to gitlab
+      env:
+        TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        PATH: ${{ github.workspace }}/tmp/dist/KnightReport-win.exe
+      run: |
+        curl --header "PRIVATE-TOKEN: $TOKEN" \
+        --upload-file "$PATH" \
+        "https://gitlab.com/api/v4/projects/29590976/packages/generic/KnightReport/automatic/KnightReport-win.exe?status=default"
