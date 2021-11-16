@@ -19,6 +19,8 @@
 7. 将第5步得到的结果复制到`cookies.txt`，保存
 8. 正常双击启动`KnightReport-win.exe`或`KnightReport-mac`
 
+需要注意的是，在MacOS系统下，`cookies.txt`应该放在挂载后的文件系统内，与`KnightReport-mac`同级，**而不是与`KnightReport-mac.dmg`同级**
+
 ## 场景演示
 
 一般情况下，进行1-5步之后，你能得到类似这样的结果
