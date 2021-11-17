@@ -31,17 +31,16 @@ class MethodAuto:
 
     @staticmethod
     def try_browser(browser_list: list) -> str:
-        use = ""
         for browser in browser_list:
             ctrl = webbrowser.get(using=browser)
             ret = ctrl.open(LoginURL)
             if ret:
                 logging.info(f"成功启动{browser}浏览器")
-                return use
+                return browser
             else:
                 logging.warning(f"尝试启动{browser}浏览器失败")
                 continue
-        return use
+        return ""
 
     def _select_browser_cookies(self):
         if self.use == 'edge':
