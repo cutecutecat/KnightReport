@@ -37,7 +37,7 @@ class MethodAuto:
             ret = ctrl.open(LoginURL)
             if ret:
                 logging.info(f"成功启动{browser}浏览器")
-                use = browser
+                return use
             else:
                 logging.warning(f"尝试启动{browser}浏览器失败")
                 continue
