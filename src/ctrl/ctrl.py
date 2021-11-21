@@ -15,7 +15,6 @@ class Ctrl:
     def __init__(self, cj):
         self.cookiesJar: CookieJar = cj
 
-        self.dates: Sequence[str] = list()
         self.uid_name: Dict[int, str] = dict()
         self.person_info: Dict[int, Info] = dict()
         self.combat: Combat
@@ -29,8 +28,7 @@ class Ctrl:
             guild_status = self.get_guild()
             self.extract_guild_info(guild_status)
 
-            self.dates = sorted(self.dates)
-            for i, date in enumerate(self.dates):
+            for i, date in enumerate(self.combat.dates):
                 attack_status = self.get_date(date)
                 self.extract_date_info(i, attack_status)
             real_path = join(fetch_cwd(), "report.xlsx")

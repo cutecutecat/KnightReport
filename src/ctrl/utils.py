@@ -1,7 +1,7 @@
 from typing import Dict, List, Sequence
 
 from openpyxl import Workbook  # type: ignore
-from openpyxl.styles import numbers  # type: ignore
+from openpyxl.styles import numbers, Font, Alignment  # type: ignore
 
 
 class Info:
@@ -71,7 +71,7 @@ class Info:
 
 class Combat:
     def __init__(self, dates: Sequence[str]):
-        self.dates = dates
+        self.dates = sorted(dates)
         self.boss_name: list = list()
         self._boss_set: set = set()
 
@@ -87,6 +87,11 @@ class Combat:
         wb = Workbook()
         ws = wb.active
 
+        # default style
+        font = Font(name='等线')
+        alignment_item = Alignment(horizontal='center', vertical='center')
+        alignment_header = Alignment(horizontal='left', vertical='center')
+
         headers = ["uid", "玩家", "出刀", "伤害", "尾刀", "均伤(除尾刀)"]
 
         for boss in self.boss_name:
@@ -98,9 +103,14 @@ class Combat:
         for person in person_list:
             ws.append(person.to_list(self.boss_name))
 
-        # 设置数字保存格式为字符串
-        col_iter = ws.iter_cols(min_col=1, max_col=len(headers) + 1)
-        for i, col in enumerate(col_iter):
-            for cell in col:
+        col_iter = ws.iter_cols(min_col=1, max_col=len(headers))
+
+        for col in col_iter:
+            for j, cell in enumerate(col):
                 cell.number_format = numbers.FORMAT_TEXT
+                cell.font = font
+                if j == 0:
+                    cell.alignment = alignment_header
+                else:
+                    cell.alignment = alignment_item
         wb.save(filename)
