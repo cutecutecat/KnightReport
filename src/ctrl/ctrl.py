@@ -2,7 +2,7 @@ import json
 import logging
 from http.cookiejar import CookieJar
 from os.path import join
-from typing import Dict, Sequence, Set
+from typing import Dict, Set
 
 import requests  # type: ignore
 
