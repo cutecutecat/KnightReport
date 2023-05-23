@@ -1,4 +1,4 @@
-requests==2.26.0
+requests==2.31.0
 pyinstaller==4.5.1
 openpyxl==3.0.9
 browser-cookie3==0.13.0
